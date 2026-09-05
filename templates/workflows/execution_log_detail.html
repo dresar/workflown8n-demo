@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+
+{% block title %}Execution Log - {{ log.workflow.title }}{% endblock %}
+
+{% block content %}
+<div class="mb-6">
+    <a href="{% url 'execution_logs' %}" class="text-blue-400 hover:text-blue-300">← Back to Execution Logs</a>
+</div>
+
+<h1 class="text-4xl font-bold mb-8">Execution Details</h1>
+
+<!-- Execution Summary -->
+<div class="bg-gray-800 p-6 rounded-lg border border-gray-700 mb-6">
+    <h2 class="text-2xl font-semibold mb-4">Summary</h2>
+    
+    <div class="grid md:grid-cols-2 gap-4">
+        <div>
+            <p class="text-gray-400 text-sm">Workflow</p>
+            <p class="text-white font-medium">{{ log.workflow.title }}</p>
+        </div>
+        
+        <div>
+            <p class="text-gray-400 text-sm">Status</p>
+            <p class="mt-1">
+                {% if log.status == 'success' %}
+                <span class="px-3 py-1 bg-green-600 text-white rounded">Success</span>
+                {% elif log.status == 'error' %}
+                <span class="px-3 py-1 bg-red-600 text-white rounded">Error</span>
+                {% elif log.status == 'running' %}
+                <span class="px-3 py-1 bg-blue-600 text-white rounded">Running</span>
+                {% else %}
+                <span class="px-3 py-1 bg-gray-600 text-white rounded">{{ log.status }}</span>
+                {% endif %}
+            </p>
+        </div>
+        
+        <div>
+            <p class="text-gray-400 text-sm">Started At</p>
+            <p class="text-white font-medium">{{ log.started_at|date:"M d, Y H:i:s" }}</p>
+        </div>
+        
+        <div>
+            <p class="text-gray-400 text-sm">Completed At</p>
+            <p class="text-white font-medium">
+                {% if log.completed_at %}
+                {{ log.completed_at|date:"M d, Y H:i:s" }}
+                {% else %}
+                -
+                {% endif %}
+            </p>
+        </div>
+        
+        <div>
+            <p class="text-gray-400 text-sm">Duration</p>
+            <p class="text-white font-medium">
+                {% if log.duration %}
+                {{ log.duration|floatformat:2 }} seconds
+                {% else %}
+                -
+                {% endif %}
+            </p>
+        </div>
+        
+        <div>
+            <p class="text-gray-400 text-sm">Execution ID</p>
+            <p class="text-white font-mono text-sm">{{ log.id }}</p>
+        </div>
+    </div>
+    
+    {% if log.error_message %}
+    <div class="mt-4 p-4 bg-red-900 bg-opacity-30 border border-red-700 rounded-lg">
+        <h3 class="text-lg font-semibold text-red-400 mb-2">Error Message</h3>
+        <p class="text-red-200">{{ log.error_message }}</p>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Input Data -->
+<div class="bg-gray-800 p-6 rounded-lg border border-gray-700 mb-6">
+    <h2 class="text-2xl font-semibold mb-4">Input Data</h2>
+    <pre class="p-4 bg-gray-900 rounded-lg text-gray-300 text-sm overflow-x-auto">{{ log.input_data|safe }}</pre>
+</div>
+
+<!-- Node Results -->
+<div class="bg-gray-800 p-6 rounded-lg border border-gray-700 mb-6">
+    <h2 class="text-2xl font-semibold mb-4">Node Execution Results</h2>
+    
+    {% if log.node_results %}
+    <div class="space-y-4">
+        {% for result in log.node_results %}
+        <div class="bg-gray-700 p-4 rounded-lg border {% if result.success %}border-green-700{% else %}border-red-700{% endif %}">
+            <div class="flex items-center justify-between mb-2">
+                <h3 class="text-lg font-semibold text-white">{{ result.node_name }}</h3>
+                {% if result.success %}
+                <span class="px-2 py-1 text-xs bg-green-600 text-white rounded">Success</span>
+                {% else %}
+                <span class="px-2 py-1 text-xs bg-red-600 text-white rounded">Failed</span>
+                {% endif %}
+            </div>
+            
+            <p class="text-sm text-gray-400 mb-2">Type: {{ result.node_type }}</p>
+            
+            {% if result.success %}
+            <details class="mt-2">
+                <summary class="text-sm text-blue-400 cursor-pointer">View Output</summary>
+                <pre class="mt-2 p-3 bg-gray-800 rounded text-xs text-gray-300 overflow-x-auto">{{ result.output|safe }}</pre>
+            </details>
+            {% else %}
+            <div class="mt-2 p-3 bg-red-900 bg-opacity-30 rounded">
+                <p class="text-sm text-red-200">Error: {{ result.error }}</p>
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-gray-400">No node execution data available.</p>
+    {% endif %}
+</div>
+
+<!-- Output Data -->
+<div class="bg-gray-800 p-6 rounded-lg border border-gray-700">
+    <h2 class="text-2xl font-semibold mb-4">Final Output</h2>
+    <pre class="p-4 bg-gray-900 rounded-lg text-gray-300 text-sm overflow-x-auto">{{ log.output_data|safe }}</pre>
+</div>
+{% endblock %}
+

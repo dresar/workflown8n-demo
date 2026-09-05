@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block title %}SimpleFlow - Workflow Automation Platform{% endblock %}
+
+{% block content %}
+<div class="text-center py-12">
+    <h1 class="text-5xl font-bold text-blue-400 mb-4">
+        SimpleFlow
+    </h1>
+    <p class="text-xl text-gray-300 mb-8">
+        Lightweight Workflow Automation Platform
+    </p>
+    <p class="text-lg text-gray-400 mb-12 max-w-2xl mx-auto">
+        Connect AI (Gemini, Groq), Google Services (Sheets, Docs, Drive, Photos), 
+        and WhatsApp to automate your workflows. Designed for cPanel hosting.
+    </p>
+    
+    <div class="flex justify-center space-x-4">
+        <a href="{% url 'register' %}" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg text-lg">
+            Get Started
+        </a>
+        <a href="{% url 'login' %}" class="px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white font-medium rounded-lg text-lg">
+            Login
+        </a>
+    </div>
+</div>
+
+<div class="grid md:grid-cols-3 gap-8 mt-16">
+    <div class="bg-gray-800 p-6 rounded-lg border border-gray-700">
+        <h3 class="text-xl font-semibold text-blue-400 mb-3">AI Integration</h3>
+        <p class="text-gray-300">
+            Integrate with Gemini and Groq AI for intelligent text generation and processing.
+        </p>
+    </div>
+    
+    <div class="bg-gray-800 p-6 rounded-lg border border-gray-700">
+        <h3 class="text-xl font-semibold text-green-400 mb-3">Google Services</h3>
+        <p class="text-gray-300">
+            Connect to Sheets, Docs, Drive, and Photos for seamless data management.
+        </p>
+    </div>
+    
+    <div class="bg-gray-800 p-6 rounded-lg border border-gray-700">
+        <h3 class="text-xl font-semibold text-purple-400 mb-3">WhatsApp Messaging</h3>
+        <p class="text-gray-300">
+            Send automated WhatsApp messages via Meta's Cloud API.
+        </p>
+    </div>
+</div>
+
+<div class="mt-16 bg-gray-800 p-8 rounded-lg border border-gray-700">
+    <h2 class="text-3xl font-bold text-center mb-6">Key Features</h2>
+    <ul class="space-y-3 text-gray-300 max-w-2xl mx-auto">
+        <li class="flex items-start">
+            <span class="text-green-400 mr-2">✓</span>
+            <span>No-code workflow builder with drag-and-drop interface</span>
+        </li>
+        <li class="flex items-start">
+            <span class="text-green-400 mr-2">✓</span>
+            <span>Webhook triggers for external integration</span>
+        </li>
+        <li class="flex items-start">
+            <span class="text-green-400 mr-2">✓</span>
+            <span>Secure API key storage with encryption</span>
+        </li>
+        <li class="flex items-start">
+            <span class="text-green-400 mr-2">✓</span>
+            <span>Execution logs and monitoring</span>
+        </li>
+        <li class="flex items-start">
+            <span class="text-green-400 mr-2">✓</span>
+            <span>Optimized for cPanel shared hosting</span>
+        </li>
+    </ul>
+</div>
+{% endblock %}
+

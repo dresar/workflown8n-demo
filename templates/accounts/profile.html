@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile - SimpleFlow{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <h1 class="text-4xl font-bold mb-8">User Profile</h1>
+    
+    <!-- User Information -->
+    <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 mb-6">
+        <h2 class="text-2xl font-semibold mb-4">Account Information</h2>
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <p class="text-gray-400">Username</p>
+                <p class="text-white font-medium">{{ user.username }}</p>
+            </div>
+            <div>
+                <p class="text-gray-400">Email</p>
+                <p class="text-white font-medium">{{ user.email }}</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Google Connection -->
+    <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 mb-6">
+        <h2 class="text-2xl font-semibold mb-4">Google Services</h2>
+        
+        {% if google_connected %}
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <span class="text-green-400 mr-2">✓</span>
+                <span class="text-white">Google account connected</span>
+            </div>
+            <form method="POST" action="{% url 'google_disconnect' %}">
+                {% csrf_token %}
+                <button type="submit" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg">
+                    Disconnect
+                </button>
+            </form>
+        </div>
+        {% else %}
+        <div class="flex items-center justify-between">
+            <p class="text-gray-400">Connect your Google account to use Sheets, Docs, Drive, and Photos</p>
+            <a href="{% url 'google_connect' %}" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg">
+                Connect Google
+            </a>
+        </div>
+        {% endif %}
+    </div>
+    
+    <!-- API Keys -->
+    <div class="bg-gray-800 p-6 rounded-lg border border-gray-700">
+        <h2 class="text-2xl font-semibold mb-4">API Keys</h2>
+        <p class="text-gray-400 mb-6">
+            Store your API keys securely (encrypted). Leave blank to keep existing keys.
+        </p>
+        
+        <form method="POST" class="space-y-6">
+            {% csrf_token %}
+            
+            <div>
+                <label for="gemini_api_key" class="block text-sm font-medium text-gray-300 mb-2">
+                    Gemini API Key
+                </label>
+                <input type="password" name="gemini_api_key" id="gemini_api_key" placeholder="Enter new key or leave blank"
+                    class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <p class="text-xs text-gray-400 mt-1">Get your key from <a href="https://makersuite.google.com/app/apikey" target="_blank" class="text-blue-400">Google AI Studio</a></p>
+            </div>
+            
+            <div>
+                <label for="groq_api_key" class="block text-sm font-medium text-gray-300 mb-2">
+                    Groq API Key
+                </label>
+                <input type="password" name="groq_api_key" id="groq_api_key" placeholder="Enter new key or leave blank"
+                    class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <p class="text-xs text-gray-400 mt-1">Get your key from <a href="https://console.groq.com/keys" target="_blank" class="text-blue-400">Groq Console</a></p>
+            </div>
+            
+            <div>
+                <label for="whatsapp_token" class="block text-sm font-medium text-gray-300 mb-2">
+                    WhatsApp Access Token
+                </label>
+                <input type="password" name="whatsapp_token" id="whatsapp_token" placeholder="Enter new token or leave blank"
+                    class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <p class="text-xs text-gray-400 mt-1">Get your token from <a href="https://developers.facebook.com/" target="_blank" class="text-blue-400">Meta Developer Portal</a></p>
+            </div>
+            
+            <button type="submit" class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg">
+                Update API Keys
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
